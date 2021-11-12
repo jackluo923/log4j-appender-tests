@@ -14,6 +14,8 @@ public class AppenderTester {
             logger.debug("This is a standard log message with with one variable: " + i);
         }
         end = System.nanoTime();
-        System.out.println("MVP implementation performance: " + (int)((double) numLogMessages * 1000 * 1000 * 1000 / (end - start)) + " msg/s");
+        int nanoSecondsInSeconds = 1000 * 1000 * 1000;
+        int eventPerSeconds = (int)((double) numLogMessages * nanoSecondsInSeconds/ (end - start));
+        System.out.println("MVP implementation performance: " + eventPerSeconds + " msg/s");
     }
 }

@@ -298,6 +298,7 @@ public final class CLPAppenderImpl extends AbstractAppender {
         }
 
         // TODO: modify layout to strip timestamp from pattern, store the pattern into metadata
+        // Currently, manually strip out the timestamp from pattern
         return new CLPAppenderImpl(name, filter, layout, true);
     }
 }
