@@ -1,4 +1,4 @@
-package com.yscope.test.mmap.test;
+package com.yscope.mmap.test;
 
 import java.io.DataOutputStream;
 import java.io.File;
