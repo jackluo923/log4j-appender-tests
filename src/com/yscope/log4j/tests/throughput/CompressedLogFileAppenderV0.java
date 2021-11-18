@@ -42,10 +42,9 @@ public class CompressedLogFileAppenderV0 {
         final Logger logger = LogManager.getLogger(CompressedLogFileAppenderV0.class);
 
         SparkLogParser sparkLogParser = new SparkLogParser(
-                "/home/jack/yscope/performance-test/src/com/yscope/compression/test1/stderr_small",
+                "logs/uncompressedSparkLogs/stderr_small",
                 true);
 
-        int numLogMessages = 100000;
         long start, end;
         start = System.nanoTime();
         for (Event event: sparkLogParser.getLogEvents()) {
@@ -54,7 +53,7 @@ public class CompressedLogFileAppenderV0 {
         end = System.nanoTime();
         int nanoSecondsInSeconds = 1000 * 1000 * 1000;
         DecimalFormat decimalFormatter = new DecimalFormat("#,###");
-        int eventPerSeconds = (int) ((double) numLogMessages * nanoSecondsInSeconds / (end - start));
+        int eventPerSeconds = (int) ((double) sparkLogParser.getLogEvents().size() * nanoSecondsInSeconds / (end - start));
         System.out.println(appenderName + ": " + decimalFormatter.format(eventPerSeconds) + " msg/s");
     }
 }

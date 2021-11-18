@@ -1,5 +1,7 @@
 package com.yscope.log4j.tests.throughput;
 
+import com.yscope.logParser.Event;
+import com.yscope.logParser.SparkLogParser;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,16 +37,20 @@ public class GzipStreamingFileAppender {
         initializeLog4j2(appenderName);
 
         final Logger logger = LogManager.getLogger(GzipStreamingFileAppender.class);
-        int numLogMessages = 100000;
+
+        SparkLogParser sparkLogParser = new SparkLogParser(
+                "logs/uncompressedSparkLogs/stderr_small",
+                true);
+
         long start, end;
         start = System.nanoTime();
-        for (int i = 0; i < numLogMessages; i++) {
-            logger.debug("This is a standard log message with with one variable: " + i);
+        for (Event event: sparkLogParser.getLogEvents()) {
+            logger.debug(event.getMsg());
         }
         end = System.nanoTime();
         int nanoSecondsInSeconds = 1000 * 1000 * 1000;
         DecimalFormat decimalFormatter = new DecimalFormat("#,###");
-        int eventPerSeconds = (int)((double) numLogMessages * nanoSecondsInSeconds/ (end - start));
-        System.out.println("File appender: " + decimalFormatter.format(eventPerSeconds) + " msg/s");
+        int eventPerSeconds = (int)((double) sparkLogParser.getLogEvents().size() * nanoSecondsInSeconds/ (end - start));
+        System.out.println("Gzip Streaming File appender: " + decimalFormatter.format(eventPerSeconds) + " msg/s");
     }
 }
