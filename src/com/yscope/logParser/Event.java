@@ -14,7 +14,7 @@ public class Event {
     }
 
     public void dropMsgNewLine() {
-        msg.stripTrailing();
+        msg = msg.stripTrailing();
     }
     @Override
     public String toString() {
